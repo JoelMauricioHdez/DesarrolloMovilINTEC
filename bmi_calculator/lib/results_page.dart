@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:bmi_calculator/calculator.dart';
 import 'package:bmi_calculator/design.dart';
 import 'package:flutter/material.dart';
