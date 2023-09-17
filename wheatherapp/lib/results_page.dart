@@ -1,19 +1,35 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:wheatherapp/design_system.dart';
+import 'package:wheatherapp/loading_screen.dart';
+import 'package:wheatherapp/weather_search.dart';
 import 'package:wheatherapp/wheather.dart';
 
-class WheatherResultsPage extends StatefulWidget {
-  const WheatherResultsPage({Key? key, required this.wheather})
+class WeatherResultsPage extends StatefulWidget {
+  const WeatherResultsPage({Key? key, required this.weatherData})
       : super(key: key);
 
-  final Wheather wheather;
+  final Map<String, dynamic> weatherData;
 
   @override
-  State<WheatherResultsPage> createState() => _WheatherResultsPageState();
+  State<WeatherResultsPage> createState() => _WeatherResultsPageState();
 }
 
-class _WheatherResultsPageState extends State<WheatherResultsPage> {
-  String recomendation = '🍦';
+class _WeatherResultsPageState extends State<WeatherResultsPage> {
+  String? temperature;
+  String? climate;
+  String? location;
+
+  @override
+  void initState() {
+    temperature = widget.weatherData["main"]["temp"].toString();
+    location = widget.weatherData["name"];
+    climate = WeatherIcon.values
+        .byName(
+            widget.weatherData["weather"][0]["main"].toString().toLowerCase())
+        .icon;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,38 +41,55 @@ class _WheatherResultsPageState extends State<WheatherResultsPage> {
             fit: BoxFit.cover,
           ),
         ),
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.arrow_outward,
-                      size: 40,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoadingScreen(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.near_me,
+                        size: 40,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.location_city,
-                      size: 40,
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WeatherSearch(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.location_city,
+                        size: 40,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Text(
-                '${widget.wheather.temperature}° ${widget.wheather.wheather}',
-                style: kMessageTextStyle.copyWith(fontSize: 80),
-              ),
-              Text(
-                "It's $recomendation time in ${widget.wheather.country}",
-                style: kMessageTextStyle,
-              ),
-            ],
+                  ],
+                ),
+                Text(
+                  '$temperature° $climate',
+                  style: kMessageTextStyle.copyWith(fontSize: 80),
+                ),
+                Text(
+                  "$location",
+                  style: kMessageTextStyle,
+                ),
+              ],
+            ),
           ),
         ),
       ),

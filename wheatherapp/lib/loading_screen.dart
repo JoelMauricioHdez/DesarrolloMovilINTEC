@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wheatherapp/location.dart';
 import 'package:wheatherapp/results_page.dart';
+import 'package:wheatherapp/utils.dart';
 import 'package:wheatherapp/wheather.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -12,14 +13,21 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  void getData() async {
+  getData() async {
     Location location = Location();
     await location.getCurrentPosition();
 
-    Wheather? currentWheather = await Wheather.getWheather(
-        lat: location.latitude, lon: location.longitud);
+    var url =
+        'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitud}&appid=eee63e77c4f6ef2fd264a11be66adc1a&units=metric';
+
+    var currentWheather = await Weather.getWeather(url);
 
     if (currentWheather == null) {
+      // ignore: use_build_context_synchronously
+      showErrorMessage(
+          context: context,
+          title: "Error",
+          description: "There has been an error while checking the weather");
       return;
     }
 
@@ -28,8 +36,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return WheatherResultsPage(
-            wheather: currentWheather,
+          return WeatherResultsPage(
+            weatherData: currentWheather,
           );
         },
       ),

@@ -77,6 +77,20 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Spartan MB
+      fonts:
+        - asset: fonts/SpartanMB/SpartanMB-Black.otf
+        - asset: fonts/SpartanMB/SpartanMB-Bold.otf
+        - asset: fonts/SpartanMB/SpartanMB-ExtraBold.otf
+        - asset: fonts/SpartanMB/SpartanMB-ExtraLight.otf
+        - asset: fonts/SpartanMB/SpartanMB-Light.otf
+        - asset: fonts/SpartanMB/SpartanMB-Medium.otf
+        - asset: fonts/SpartanMB/SpartanMB-Regular.otf
+        - asset: fonts/SpartanMB/SpartanMB-SemiBold.otf
+        - asset: fonts/SpartanMB/SpartanMB-Thin.otf
+        
+
   # fonts:
   #   - family: Schyler
   #     fonts:
